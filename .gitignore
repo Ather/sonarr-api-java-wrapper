@@ -47,4 +47,8 @@ Temporary Items
 .apdisk
 sonarr-api-java-wrapper.iml
 
-target/
+target/*
+
+.classpath
+.project
+.settings/
