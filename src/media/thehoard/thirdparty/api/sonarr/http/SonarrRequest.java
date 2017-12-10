@@ -5,6 +5,7 @@ import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Type;
 import java.time.Duration;
 import java.util.Date;
+import java.util.concurrent.Future;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.ParseException;
@@ -21,12 +22,14 @@ import com.google.gson.typeadapters.RuntimeTypeAdapterFactory;
 
 import media.thehoard.thirdparty.api.sonarr.SonarrClient;
 
+import static media.thehoard.thirdparty.api.sonarr.SonarrClient.CLIENT_THREADPOOL;
+
 public class SonarrRequest<ContentType, ResponseType> {
 	private SonarrClient SONARR_CLIENT;
 
 	private RequestMethod requestMethod;
 
-	private HttpClient httpClient;
+	private static HttpClient httpClient = HttpClientBuilder.create().build();
 
 	private RequestBuilder requestBuilder;
 
@@ -45,8 +48,6 @@ public class SonarrRequest<ContentType, ResponseType> {
 
 		this.responseType = responseType;
 
-		this.httpClient = HttpClientBuilder.create().build();
-
 		switch (this.requestMethod) {
 		case POST:
 			requestBuilder = RequestBuilder.post();
@@ -62,7 +63,6 @@ public class SonarrRequest<ContentType, ResponseType> {
 			requestBuilder = RequestBuilder.get();
 			break;
 		}
-		;
 
 		requestBuilder.setUri(requestUrl);
 
@@ -116,11 +116,19 @@ public class SonarrRequest<ContentType, ResponseType> {
 			return null;
 		}
 	}
+
+	public Future<ResponseType> executeAsync(Type responseType) {
+		return CLIENT_THREADPOOL.submit(() -> execute(responseType));
+	}
 	
 	public ResponseType execute() throws IOException {
 		return execute(responseType);
 	}
-	
+
+	public Future<ResponseType> executeAsync() {
+		return executeAsync(responseType);
+	}
+
 	private GsonBuilder gsonBuilder = new GsonBuilder().registerTypeAdapter(Date.class, new DateDeserializer()).registerTypeAdapter(Duration.class, new DurationDeserializer());
 
 	public Gson getGson() {

@@ -22,5 +22,4 @@ public class DateDeserializer implements JsonDeserializer<Date> {
 		}
 		throw new JsonParseException("Invalid/unparseable date provided: " + json.getAsString());
 	}
-
 }
