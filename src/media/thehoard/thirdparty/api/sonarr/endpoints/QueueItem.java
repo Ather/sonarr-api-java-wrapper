@@ -2,23 +2,24 @@ package media.thehoard.thirdparty.api.sonarr.endpoints;
 
 import media.thehoard.thirdparty.api.sonarr.endpoints.common.Quality;
 import media.thehoard.thirdparty.api.sonarr.endpoints.series.Series;
+import media.thehoard.thirdparty.api.sonarr.endpoints.wantedmissing.StatusMessage;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Queue {
+public class QueueItem {
 	private Series series;
 	private Episode episode;
 	private Quality quality;
-	private Integer size;
+	private Double size;
 	private String title;
-	private Integer sizeleft;
+	private Double sizeleft;
 	private String timeleft;
 	private String estimatedCompletionTime;
 	private String status;
 	private String trackedDownloadStatus;
-	private List<Object> statusMessages = null;
+	private List<StatusMessage> statusMessages = null;
 	private String downloadId;
 	private String protocol;
 	private Integer id;
@@ -32,7 +33,7 @@ public class Queue {
 		this.series = series;
 	}
 
-	public Queue withSeries(Series series) {
+	public QueueItem withSeries(Series series) {
 		this.series = series;
 		return this;
 	}
@@ -45,7 +46,7 @@ public class Queue {
 		this.episode = episode;
 	}
 
-	public Queue withEpisode(Episode episode) {
+	public QueueItem withEpisode(Episode episode) {
 		this.episode = episode;
 		return this;
 	}
@@ -58,20 +59,20 @@ public class Queue {
 		this.quality = quality;
 	}
 
-	public Queue withQuality(Quality quality) {
+	public QueueItem withQuality(Quality quality) {
 		this.quality = quality;
 		return this;
 	}
 
-	public Integer getSize() {
+	public Double getSize() {
 		return size;
 	}
 
-	public void setSize(Integer size) {
+	public void setSize(Double size) {
 		this.size = size;
 	}
 
-	public Queue withSize(Integer size) {
+	public QueueItem withSize(Double size) {
 		this.size = size;
 		return this;
 	}
@@ -84,20 +85,20 @@ public class Queue {
 		this.title = title;
 	}
 
-	public Queue withTitle(String title) {
+	public QueueItem withTitle(String title) {
 		this.title = title;
 		return this;
 	}
 
-	public Integer getSizeleft() {
+	public Double getSizeleft() {
 		return sizeleft;
 	}
 
-	public void setSizeleft(Integer sizeleft) {
+	public void setSizeleft(Double sizeleft) {
 		this.sizeleft = sizeleft;
 	}
 
-	public Queue withSizeleft(Integer sizeleft) {
+	public QueueItem withSizeleft(Double sizeleft) {
 		this.sizeleft = sizeleft;
 		return this;
 	}
@@ -110,7 +111,7 @@ public class Queue {
 		this.timeleft = timeleft;
 	}
 
-	public Queue withTimeleft(String timeleft) {
+	public QueueItem withTimeleft(String timeleft) {
 		this.timeleft = timeleft;
 		return this;
 	}
@@ -123,7 +124,7 @@ public class Queue {
 		this.estimatedCompletionTime = estimatedCompletionTime;
 	}
 
-	public Queue withEstimatedCompletionTime(String estimatedCompletionTime) {
+	public QueueItem withEstimatedCompletionTime(String estimatedCompletionTime) {
 		this.estimatedCompletionTime = estimatedCompletionTime;
 		return this;
 	}
@@ -136,7 +137,7 @@ public class Queue {
 		this.status = status;
 	}
 
-	public Queue withStatus(String status) {
+	public QueueItem withStatus(String status) {
 		this.status = status;
 		return this;
 	}
@@ -149,20 +150,20 @@ public class Queue {
 		this.trackedDownloadStatus = trackedDownloadStatus;
 	}
 
-	public Queue withTrackedDownloadStatus(String trackedDownloadStatus) {
+	public QueueItem withTrackedDownloadStatus(String trackedDownloadStatus) {
 		this.trackedDownloadStatus = trackedDownloadStatus;
 		return this;
 	}
 
-	public List<Object> getStatusMessages() {
+	public List<StatusMessage> getStatusMessages() {
 		return statusMessages;
 	}
 
-	public void setStatusMessages(List<Object> statusMessages) {
+	public void setStatusMessages(List<StatusMessage> statusMessages) {
 		this.statusMessages = statusMessages;
 	}
 
-	public Queue withStatusMessages(List<Object> statusMessages) {
+	public QueueItem withStatusMessages(List<StatusMessage> statusMessages) {
 		this.statusMessages = statusMessages;
 		return this;
 	}
@@ -175,7 +176,7 @@ public class Queue {
 		this.downloadId = downloadId;
 	}
 
-	public Queue withDownloadId(String downloadId) {
+	public QueueItem withDownloadId(String downloadId) {
 		this.downloadId = downloadId;
 		return this;
 	}
@@ -188,7 +189,7 @@ public class Queue {
 		this.protocol = protocol;
 	}
 
-	public Queue withProtocol(String protocol) {
+	public QueueItem withProtocol(String protocol) {
 		this.protocol = protocol;
 		return this;
 	}
@@ -201,7 +202,7 @@ public class Queue {
 		this.id = id;
 	}
 
-	public Queue withId(Integer id) {
+	public QueueItem withId(Integer id) {
 		this.id = id;
 		return this;
 	}
@@ -214,7 +215,7 @@ public class Queue {
 		this.additionalProperties.put(name, value);
 	}
 
-	public Queue withAdditionalProperty(String name, Object value) {
+	public QueueItem withAdditionalProperty(String name, Object value) {
 		this.additionalProperties.put(name, value);
 		return this;
 	}

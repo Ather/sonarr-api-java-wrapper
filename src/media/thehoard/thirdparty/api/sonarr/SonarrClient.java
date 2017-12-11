@@ -14,8 +14,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.typeadapters.RuntimeTypeAdapterFactory;
 
-import media.thehoard.thirdparty.api.sonarr.endpoints.Release;
-import media.thehoard.thirdparty.api.sonarr.endpoints.Rootfolder;
+import media.thehoard.thirdparty.api.sonarr.endpoints.QueueItem;
 import media.thehoard.thirdparty.api.sonarr.endpoints.SystemStatus;
 import media.thehoard.thirdparty.api.sonarr.endpoints.command.CommandBody;
 import media.thehoard.thirdparty.api.sonarr.endpoints.command.CommandName;
@@ -29,10 +28,8 @@ import media.thehoard.thirdparty.api.sonarr.endpoints.command.commands.SeriesBod
 import media.thehoard.thirdparty.api.sonarr.endpoints.common.PageManager;
 import media.thehoard.thirdparty.api.sonarr.endpoints.common.SortDirection;
 import media.thehoard.thirdparty.api.sonarr.endpoints.common.SortKey;
+import media.thehoard.thirdparty.api.sonarr.endpoints.episode.EpisodeFile;
 import media.thehoard.thirdparty.api.sonarr.endpoints.history.HistoryRecord;
-import media.thehoard.thirdparty.api.sonarr.endpoints.parse.Parse;
-import media.thehoard.thirdparty.api.sonarr.endpoints.profile.Profile;
-import media.thehoard.thirdparty.api.sonarr.endpoints.serieslookup.SeriesLookup;
 import media.thehoard.thirdparty.api.sonarr.endpoints.systembackup.SystemBackup;
 import media.thehoard.thirdparty.api.sonarr.endpoints.wantedmissing.WantedMissingRecord;
 import media.thehoard.thirdparty.api.sonarr.http.DateDeserializer;
@@ -54,12 +51,12 @@ public class SonarrClient {
 	private final String API_KEY;
 
 	public SonarrClient(String apiUrl, String apiKey) {
-		this.API_URL = apiUrl;
+		this.API_URL = apiUrl.endsWith("/")? apiUrl : apiUrl + "/";
 		this.API_KEY = apiKey;
 	}
 
 	public SonarrClient(String apiKey) {
-		this("http://localhost:8989/api", apiKey);
+		this("http://localhost:8989/api/", apiKey);
 	}
 
 	public String getApiUrl() {
@@ -419,6 +416,16 @@ public class SonarrClient {
 			}
 		}
 
+		public Put put(media.thehoard.thirdparty.api.sonarr.endpoints.episode.EpisodeFile episodeFile) {
+			return new Put(episodeFile);
+		}
+
+		public class Put extends SonarrRequest<media.thehoard.thirdparty.api.sonarr.endpoints.episode.EpisodeFile, media.thehoard.thirdparty.api.sonarr.endpoints.episode.EpisodeFile> {
+			protected Put(media.thehoard.thirdparty.api.sonarr.endpoints.episode.EpisodeFile episodeFile) {
+				super(SonarrClient.this, RequestMethod.PUT, "episodefile/" + episodeFile.getId(), episodeFile, media.thehoard.thirdparty.api.sonarr.endpoints.episode.EpisodeFile.class);
+			}
+		}
+
 		public Delete delete(int episodeFileId) {
 			return new Delete(episodeFileId);
 		}
@@ -519,9 +526,9 @@ public class SonarrClient {
 			return new Get();
 		}
 
-		public class Get extends SonarrRequest<Object, List<media.thehoard.thirdparty.api.sonarr.endpoints.Queue>> {
+		public class Get extends SonarrRequest<Object, List<QueueItem>> {
 			protected Get() {
-				super(SonarrClient.this, RequestMethod.GET, "queue", new TypeToken<List<media.thehoard.thirdparty.api.sonarr.endpoints.Queue>>() {
+				super(SonarrClient.this, RequestMethod.GET, "queue", new TypeToken<List<QueueItem>>() {
 				}.getType());
 			}
 		}
@@ -536,10 +543,8 @@ public class SonarrClient {
 
 		public class Delete extends SonarrRequest<Object, Object> {
 			protected Delete(int id, boolean doBlacklist) {
-				super(SonarrClient.this, RequestMethod.DELETE, "queue", Object.class);
-				super.addParameter("id", String.valueOf(id));
-				if (doBlacklist)
-					super.addParameter("blacklist", "true");
+				super(SonarrClient.this, RequestMethod.DELETE, "queue/" + id, Object.class);
+				super.addParameter("blacklist", "true");
 			}
 		}
 	}

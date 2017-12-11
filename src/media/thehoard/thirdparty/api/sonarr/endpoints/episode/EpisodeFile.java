@@ -8,7 +8,7 @@ public class EpisodeFile {
 	private Integer seriesId;
 	private Integer seasonNumber;
 	private String path;
-	private Integer size;
+	private Long size;
 	private String dateAdded;
 	private String sceneName;
 	private EpisodeQuality quality;
@@ -39,11 +39,11 @@ public class EpisodeFile {
 		this.path = path;
 	}
 
-	public Integer getSize() {
+	public Long getSize() {
 		return size;
 	}
 
-	public void setSize(Integer size) {
+	public void setSize(Long size) {
 		this.size = size;
 	}
 
